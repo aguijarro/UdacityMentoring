@@ -28,29 +28,33 @@
     </style>
     <script type="text/javascript">
         function draw(data){
+            console.log(data)
+            "use strict";
             var margin = 75,
                 width = 1400 - margin,
                 height = 600 - margin;
-
-            //Define workspace
 
             var svg = d3.select("#chart-01")
                 .append("svg")
                 .attr("width", "100%")
                 .attr("height", "400px");
 
-            //build the graphic
+            var svg2 = d3.select("#chart-02")
+                .append("svg")
+                .attr("width", "100%")
+                .attr("height", "400px");
+
 
             var myChart =  new dimple.chart(svg, data);
-            myChart.setBounds(60, 30, 1100, 330)
-            myChart.addMeasureAxis("x", "x1");
-            myChart.addMeasureAxis("y", "y1");
-            myChart.addSeries(["x1", "y1", "Relation x1 vs y1"], dimple.plot.bubble);
-            //myChart.addSeries(["x1", "y1", "channel"], dimple.plot.bubble);
-            //myChart.addSeries(["channel"], dimple.plot.bubble);
-            //myChart.addSeries('Test', dimple.plot.bubble);
+            myChart.setBounds(60, 30, 1100, 330);
+            myChart.addMeasureAxis("x", "bets_per_day_fixedodds");
+            myChart.addMeasureAxis("y", "euros_per_bet_fixedodds");
+            myChart.addSeries(["bets_per_day_fixedodds", "euros_per_bet_fixedodds", "Test"], dimple.plot.bubble);
             myChart.addLegend(200, 10, 360, 20, "right");
             myChart.draw();
+
+
+
         }
     </script>
 
@@ -73,11 +77,28 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="chart-02">
+
+                </div>
+            </div>
+        </div>
     </div>
 
   <script type="text/javascript">
-    d3.csv("data/dataset.csv", draw);
+    d3.tsv("data/Dataset2.tsv", function(d) {
+          // transform data
+          d['bets_per_day_fixedodds'] = +d['bets_per_day_fixedodds'];
+          d['euros_per_bet_fixedodds'] = +d['euros_per_bet_fixedodds'];
+          return d;
+    }, draw);
+
+
   </script>
+
+
+
 
 </body>
 </html>
